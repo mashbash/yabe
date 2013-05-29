@@ -21,6 +21,7 @@ public class Post extends Model {
 	public List<Comment> comments;
 	
 	public Post(User author, String title, String content) {
+		this.comments = new ArrayList<Comment>();
 		this.author = author;
 		this.title = title;
 		this.content = content;
