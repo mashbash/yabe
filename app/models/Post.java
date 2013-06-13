@@ -4,21 +4,31 @@ import java.util.*;
 import javax.persistence.*;
 
 import play.db.jpa.*;
+import play.data.validation.*;
 
 @Entity
 public class Post extends Model {
 	
+	@Required
 	public String title;
+	
+	@Required
 	public Date postedAt;
 	
 	@Lob // tells JPA to use large txt db to store post content
+	@Required
+	@MaxSize(10000)
 	public String content;
 	
+	@Required
 	@ManyToOne
 	public User author;
 	
 	@OneToMany(mappedBy="post", cascade=CascadeType.ALL)
 	public List<Comment> comments;
+	
+	@ManyToMany(cascade=CascadeType.PERSIST)
+	public Set<Tag> tags;
 	
 	public Post(User author, String title, String content) {
 		this.comments = new ArrayList<Comment>();
@@ -34,9 +44,6 @@ public class Post extends Model {
 		this.comments.add(newComment);
 		return this;
 	}
-	
-	@ManyToMany(cascade=CascadeType.PERSIST)
-	public Set<Tag> tags;
 	
 	public Post tagItWith(String name) {
 		tags.add(Tag.findOrCreateByName(name));
