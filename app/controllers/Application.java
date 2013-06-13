@@ -9,6 +9,12 @@ import java.util.*;
 
 import models.*;
 
+import play.cache.Cache;
+
+import play.data.validation.*;
+import play.libs.*;
+import play.cache.*;
+
 public class Application extends Controller {
 
 	@Before
@@ -27,7 +33,27 @@ public class Application extends Controller {
     
     public static void show(Long id) {
     	Post post = Post.findById(id);
-    	render(post);
+    	String randomID = Codec.UUID();
+    	render(post, randomID);
+    	
+    }
+    
+    public static void postComment(Long postId, String author, String content) {
+    	Post post = Post.findById(postId);
+    	if (validation.hasErrors()) {
+    		render("Application/show.html", post);
+    	}
+    	post.addComment(author, content);
+    	flash.success("Thanks for posting %s", author);
+    	show(postId);
+    }
+    
+    
+    public static void captcha(String id) {
+    	Images.Captcha captcha = Images.captcha();
+    	String code = captcha.getText("#E4EAFD");
+    	Cache.set(id,  code, "10mn");
+    	renderBinary(captcha);
     }
 
 }

@@ -1,0 +1,5 @@
+CompilerOracle: exclude jregex/Pretokenizer.next
+Listening for transport dt_socket at address: 8000
+10:59:15,495 INFO  ~ Starting /home/nigel/development/projects/yabe
+10:59:15,994 WARN  ~ You're running Play! in DEV mode
+10:59:16,087 INFO  ~ Listening for HTTP on port 9005 (Waiting a first request to start) ...
